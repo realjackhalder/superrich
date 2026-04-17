@@ -9,6 +9,7 @@ import MiniMarketsList from './components/MiniMarketsList';
 import MarketTrades from './components/MarketTrades';
 import { useBinanceMarketData } from './hooks/useBinanceMarketData';
 import { useBinanceAccount } from './hooks/useBinanceAccount';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
   const [chartInterval, setChartInterval] = useState('1m');
@@ -179,6 +180,7 @@ function App() {
           </button>
         </main>
       )}
+      <SpeedInsights />
     </div>
   );
 }
