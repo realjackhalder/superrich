@@ -254,6 +254,17 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
-});
+// Export for Vercel
+export default app;
+
+// Only listen if run directly
+if (process.env.NODE_ENV !== 'production' && import.meta.url === `file://${process.argv[1]}`) {
+  app.listen(PORT, () => {
+    console.log(`Backend server running on port ${PORT}`);
+  });
+} else if (!process.env.VERCEL) {
+  // Fallback for non-Vercel environments where we still want to listen
+  app.listen(PORT, () => {
+    console.log(`Backend server running on port ${PORT}`);
+  });
+}
