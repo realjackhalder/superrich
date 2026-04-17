@@ -32,7 +32,7 @@ function App() {
           </div>
           <nav className="hidden md:flex space-x-4 text-sm font-medium text-textMuted">
             {['Exchange Rates', 'Markets', 'Wallet'].map(tab => (
-              <button 
+              <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`transition-colors ${activeTab === tab ? 'text-textMain font-bold' : 'hover:text-textMain'}`}
@@ -60,7 +60,7 @@ function App() {
                     <User className="w-5 h-5 text-textMain" />
                   </div>
                   <div className="absolute right-0 top-full mt-2 w-32 bg-panel border border-[#2B3139] rounded shadow-lg hidden group-hover:block z-50">
-                    <button 
+                    <button
                       onClick={() => setIsLoggedIn(false)}
                       className="w-full text-left px-4 py-2 text-roseRed hover:bg-[#2B3139] transition-colors rounded"
                     >
@@ -122,7 +122,7 @@ function App() {
               </span>
             </div>
           </div>
-          
+
           <main className="flex-1 p-1 lg:p-2 grid grid-cols-1 lg:grid-cols-12 gap-1 lg:gap-2 h-[calc(100vh-128px)] overflow-hidden bg-[#0B0E11]">
 
             {/* Left Column: Order Book */}
@@ -172,7 +172,7 @@ function App() {
               We're currently building a secure and seamless {activeTab.toLowerCase()} experience. Stay tuned for updates!
             </p>
           </div>
-          <button 
+          <button
             onClick={() => setActiveTab('Exchange Rates')}
             className="bg-[#2B3139] hover:bg-[#363C44] text-textMain px-6 py-2 rounded-lg font-medium transition-all border border-[#474D57] relative z-10"
           >
@@ -180,6 +180,41 @@ function App() {
           </button>
         </main>
       )}
+
+      {/* Footer */}
+      <footer className="bg-[#181A20] border-t border-[#2B3139] py-8 px-6">
+        <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-6">
+          {/* Logo & Description */}
+          <div className="flex flex-col items-center space-y-2">
+            <div className="flex items-center space-x-2 text-[#FCD535] font-bold text-xl">
+              <Shield className="w-6 h-6" />
+              <span>SuperRich</span>
+            </div>
+            <p className="text-textMuted text-xs leading-relaxed max-w-xl">
+              Real-time market data for the Myanmar people. Empowering traders with live global rates.
+            </p>
+          </div>
+
+          {/* Links */}
+          <div className="flex items-center justify-center space-x-6 text-[10px] font-medium text-textMuted/60 tracking-wider uppercase">
+            <a href="#" className="hover:text-textMain transition-colors">Privacy</a>
+            <a href="#" className="hover:text-textMain transition-colors">Terms</a>
+            <a href="#" className="hover:text-textMain transition-colors">API</a>
+          </div>
+
+          {/* Bottom Row: Copyright & Love */}
+          <div className="w-full pt-6 border-t border-[#2B3139]/30 flex flex-col items-center space-y-3">
+            <div className="text-[10px] text-textMuted/50 tracking-widest uppercase">
+              © {new Date().getFullYear()} SuperRich.
+            </div>
+            <div className="flex items-center space-x-1.5 opacity-80">
+              <span className="text-[9px] uppercase tracking-tighter text-textMuted">Made with</span>
+              <span className="text-roseRed text-xs">❤️</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+
       <SpeedInsights />
     </div>
   );
