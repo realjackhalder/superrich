@@ -3,11 +3,21 @@ import cors from 'cors';
 import crypto from 'crypto';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// ... (existing helper functions and routes)
+
+// Move existing routes above static serving to avoid conflicts
+// (I will keep the routes here but I need to make sure I don't delete them)
 
 const API_KEY = process.env.BINANCE_API_KEY;
 const API_SECRET = process.env.BINANCE_API_SECRET;
@@ -232,6 +242,16 @@ app.get('/api/market-caps', async (req, res) => {
     console.error('Error fetching market caps:', error.message);
     res.json({ success: true, data: {} });
   }
+});
+
+// Serve static files from the React app
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.listen(PORT, () => {

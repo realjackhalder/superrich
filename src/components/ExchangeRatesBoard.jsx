@@ -3,7 +3,7 @@ import { RefreshCw, Printer, Calendar } from 'lucide-react';
 import { useMarketsData } from '../hooks/useMarketsData';
 
 export default function ExchangeRatesBoard() {
-  const { fiatMarkets, isLoading } = useMarketsData();
+  const { fiatMarkets, isLoading, error } = useMarketsData();
   const [currentTime, setCurrentTime] = useState(new Date());
 
   // Converter State
@@ -173,6 +173,8 @@ export default function ExchangeRatesBoard() {
             <tbody className="divide-y divide-[#2B3139]">
               {isLoading ? (
                 <tr><td colSpan="3" className="py-12 text-[#848E9C]">Loading live rates...</td></tr>
+              ) : error ? (
+                <tr><td colSpan="3" className="py-12 text-roseRed px-4">{error}</td></tr>
               ) : rateData.length === 0 ? (
                 <tr><td colSpan="3" className="py-12 text-[#848E9C]">No rates available.</td></tr>
               ) : (

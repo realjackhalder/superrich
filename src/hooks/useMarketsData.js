@@ -13,13 +13,23 @@ export function useMarketsData() {
         // 1. Fetch Crypto Markets and Market Caps
         const cryptoSymbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "XRPUSDT", "ADAUSDT"];
         const apiBase = import.meta.env.VITE_API_URL || '';
+        const fetchJson = async (url, options) => {
+          const res = await fetch(url, options);
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          const contentType = res.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("Oops! The server didn't return JSON. Are you sure the backend is running?");
+          }
+          return res.json();
+        };
+
         const [cryptoRes, capsRes] = await Promise.all([
-          fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(cryptoSymbols)}`),
-          fetch(`${apiBase}/api/market-caps`)
+          fetchJson(`https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(cryptoSymbols)}`),
+          fetchJson(`${apiBase}/api/market-caps`)
         ]);
         
-        const cryptoData = await cryptoRes.json();
-        const capsResult = await capsRes.json();
+        const cryptoData = cryptoRes;
+        const capsResult = capsRes;
         const marketCaps = capsResult.success ? capsResult.data : {};
 
           if (Array.isArray(cryptoData)) {
@@ -42,21 +52,20 @@ export function useMarketsData() {
           }
 
         // 2. Fetch MEXC Tickers for Commodities and extra cryptos
-        const mexcRes = await fetch(`${apiBase}/api/mexc-ticker`);
-        const mexcResult = await mexcRes.json();
+        const mexcResult = await fetchJson(`${apiBase}/api/mexc-ticker`);
         let mexcData = [];
         if (mexcResult.success && Array.isArray(mexcResult.data)) {
           mexcData = mexcResult.data;
         }
 
         // 3. Fetch Fiat P2P Rates and TH Ticker
-        const [p2pRes, thRes] = await Promise.all([
-          fetch(`${apiBase}/api/p2p-rates`),
-          fetch(`${apiBase}/api/th-ticker`)
+        const [p2pResult, thResult] = await Promise.all([
+          fetchJson(`${apiBase}/api/p2p-rates`),
+          fetchJson(`${apiBase}/api/th-ticker`)
         ]);
         
-        const p2pData = await p2pRes.json();
-        const thData = await thRes.json();
+        const p2pData = p2pResult;
+        const thData = thResult;
 
         if (p2pData.success && p2pData.data) {
           const rates = p2pData.data; // { MMK: 4200, THB: 36.5, ... }
