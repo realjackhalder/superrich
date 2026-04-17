@@ -30,7 +30,7 @@ function App() {
             <span>SuperRich</span>
           </div>
           <nav className="hidden md:flex space-x-4 text-sm font-medium text-textMuted">
-            {['Exchange Rates', 'Markets', 'Earn', 'Wallet'].map(tab => (
+            {['Exchange Rates', 'Markets', 'Wallet'].map(tab => (
               <button 
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -42,7 +42,6 @@ function App() {
           </nav>
         </div>
         <div className="flex items-center space-x-4 text-textMuted">
-          <Bell className="w-5 h-5 hover:text-textMain cursor-pointer" />
           <div className="hidden md:flex items-center space-x-3 text-sm">
             {isLoggedIn ? (
               <>
@@ -69,22 +68,7 @@ function App() {
                   </div>
                 </div>
               </>
-            ) : (
-              <>
-                <button 
-                  onClick={() => setIsLoggedIn(true)}
-                  className="hover:text-textMain transition-colors"
-                >
-                  Log In
-                </button>
-                <button 
-                  onClick={() => setIsLoggedIn(true)}
-                  className="bg-[#FCD535] text-black px-4 py-1.5 rounded font-medium hover:bg-[#FCD535]/90 transition-colors"
-                >
-                  Sign Up
-                </button>
-              </>
-            )}
+            ) : null}
           </div>
           <Menu className="w-6 h-6 md:hidden hover:text-textMain cursor-pointer" />
         </div>
@@ -174,10 +158,25 @@ function App() {
           </main>
         </>
       ) : (
-        <main className="flex-1 flex items-center justify-center text-textMuted flex-col space-y-4">
-          <Shield className="w-16 h-16 opacity-20" />
-          <h2 className="text-2xl font-medium text-textMain">{activeTab} Page</h2>
-          <p>This module is currently under construction.</p>
+        <main className="flex-1 flex items-center justify-center text-textMuted flex-col space-y-6 bg-[#0B0E11]">
+          <div className="relative">
+            <div className="absolute inset-0 bg-[#FCD535] opacity-20 blur-3xl rounded-full"></div>
+            <Shield className="w-24 h-24 relative z-10 text-[#FCD535] opacity-80" />
+          </div>
+          <div className="text-center space-y-2 relative z-10">
+            <h2 className="text-4xl font-bold text-textMain tracking-tight">
+              {activeTab} Feature <span className="text-[#FCD535]">Coming Soon</span>
+            </h2>
+            <p className="text-lg text-textMuted max-w-md mx-auto">
+              We're currently building a secure and seamless {activeTab.toLowerCase()} experience. Stay tuned for updates!
+            </p>
+          </div>
+          <button 
+            onClick={() => setActiveTab('Exchange Rates')}
+            className="bg-[#2B3139] hover:bg-[#363C44] text-textMain px-6 py-2 rounded-lg font-medium transition-all border border-[#474D57] relative z-10"
+          >
+            Back to Dashboard
+          </button>
         </main>
       )}
     </div>

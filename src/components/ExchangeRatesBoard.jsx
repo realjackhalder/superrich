@@ -42,9 +42,10 @@ export default function ExchangeRatesBoard() {
     XAU: '🥇', // Gold
     XAG: '🥈', // Silver
     XCU: '🥉', // Copper
+    OIL: '🛢️', // Oil
   };
 
-  const displayCurrencies = ['USD', 'GBP', 'EUR', 'JPY', 'SGD', 'THB', 'CNY', 'MYR', 'BDT', 'VND', 'NZD', 'AUD', 'KRW', 'RUB', 'INR', 'XAU', 'XAG', 'XCU'];
+  const displayCurrencies = ['USD', 'GBP', 'EUR', 'JPY', 'SGD', 'THB', 'CNY', 'MYR', 'BDT', 'VND', 'NZD', 'AUD', 'KRW', 'RUB', 'INR', 'XAU', 'XAG', 'XCU', 'OIL'];
 
   // Filter and map fiat markets to get Buying/Selling rates
   const rateData = displayCurrencies.map(cur => {

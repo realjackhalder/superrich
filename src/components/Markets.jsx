@@ -67,25 +67,30 @@ export default function Markets({ onSelectMarket }) {
     return price.toFixed(2);
   };
 
-  const allMarkets = [...fiatMarkets, ...cryptoMarkets];
-  
-  // Base filtering: drop MMK pairs except USDT/MMK
-  let filteredData = allMarkets.filter(m => {
+  // Base filtering: drop all MMK pairs except USDT/MMK for the list
+  const cleanFiatMarkets = fiatMarkets.filter(m => {
     if (m.quoteAsset === 'MMK' && m.baseAsset !== 'USDT') return false;
     if (m.baseAsset === 'MMK' && m.quoteAsset !== 'USDT') return false;
     return true;
   });
 
+  const allMarkets = [...cleanFiatMarkets, ...cryptoMarkets];
+  
+  let filteredData = allMarkets;
+
   // Tab filtering
-  if (activeTab === 'Fiats') {
-    const cryptoSymbols = ['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA'];
-    filteredData = filteredData.filter(m => !cryptoSymbols.includes(m.baseAsset));
+  if (activeTab === 'Currency') {
+    const commoditySymbols = ['XAU', 'XAG', 'XCU', 'OIL', 'Gold(XAUT)', 'Silver(XAG)', 'Copper(XCU)', 'Oil(WTI)'];
+    filteredData = cleanFiatMarkets.filter(m => !commoditySymbols.includes(m.baseAsset));
+  } else if (activeTab === 'Commodities') {
+    const commoditySymbols = ['XAU', 'XAG', 'XCU', 'OIL', 'Gold(XAUT)', 'Silver(XAG)', 'Copper(XCU)', 'Oil(WTI)'];
+    filteredData = cleanFiatMarkets.filter(m => commoditySymbols.includes(m.baseAsset));
   } else if (activeTab === 'Spot Markets') {
     filteredData = cryptoMarkets;
   } else if (activeTab === 'Hot') {
     filteredData = [...cryptoMarkets].sort((a, b) => b.change24h - a.change24h).slice(0, 10);
   } else if (activeTab === 'Favorites') {
-    filteredData = filteredData.filter(m => favorites.includes(m.symbol));
+    filteredData = allMarkets.filter(m => favorites.includes(m.symbol));
   }
 
   // Search filtering
@@ -106,7 +111,7 @@ export default function Markets({ onSelectMarket }) {
         {/* Main Tabs */}
         <div className="flex items-center justify-between border-b border-[#2B3139] mb-4 overflow-x-auto no-scrollbar pb-2">
           <div className="flex space-x-6 text-sm font-medium">
-            {['All', 'Favorites', 'Fiats', 'Spot Markets', 'Hot'].map((tab) => (
+            {['All', 'Favorites', 'Currency', 'Commodities', 'Spot Markets', 'Hot'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -178,7 +183,14 @@ export default function Markets({ onSelectMarket }) {
                   return (
                     <tr 
                       key={index} 
-                      onClick={() => onSelectMarket && onSelectMarket(item.symbol)}
+                      onClick={() => {
+                        if (item.source === 'Binance') {
+                          window.open('https://www.binance.com/register?ref=199653366', '_blank');
+                        } else if (item.source === 'MEXC') {
+                          window.open('https://www.mexc.com/acquisition/custom-sign-up?shareCode=mexc-3cu5N', '_blank');
+                        }
+                        onSelectMarket && onSelectMarket(item.symbol);
+                      }}
                       className="hover:bg-[#2B3139]/50 transition-colors cursor-pointer group"
                     >
                       {/* Crypto / Pair */}
