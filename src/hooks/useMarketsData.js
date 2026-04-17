@@ -12,7 +12,7 @@ export function useMarketsData() {
       try {
         // 1. Fetch Crypto Markets and Market Caps
         const cryptoSymbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "XRPUSDT", "ADAUSDT"];
-        const apiBase = `http://${window.location.hostname}:3001`;
+        const apiBase = import.meta.env.VITE_API_URL || '';
         const [cryptoRes, capsRes] = await Promise.all([
           fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(cryptoSymbols)}`),
           fetch(`${apiBase}/api/market-caps`)

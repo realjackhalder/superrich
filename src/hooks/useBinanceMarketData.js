@@ -24,7 +24,7 @@ export function useBinanceMarketData(symbol = 'usdtbrl', interval = '1m') {
 
         if (isFiat) {
           try {
-            const apiBase = `http://${window.location.hostname}:3001`;
+            const apiBase = import.meta.env.VITE_API_URL || '';
             const p2pRes = await fetch(`${apiBase}/api/p2p-rates`);
             const p2pData = await p2pRes.json();
             if (p2pData.success && p2pData.data) {

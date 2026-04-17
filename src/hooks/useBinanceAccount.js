@@ -16,7 +16,7 @@ export function useBinanceAccount(isLoggedIn) {
       setError(null);
       try {
         // Use Vite proxy setup in vite.config.js to point /api to backend port 3001
-        const apiBase = `http://${window.location.hostname}:3001`;
+        const apiBase = import.meta.env.VITE_API_URL || '';
         const res = await fetch(`${apiBase}/api/balance`);
         const data = await res.json();
         
