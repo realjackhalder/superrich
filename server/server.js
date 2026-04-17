@@ -120,8 +120,29 @@ app.get('/api/p2p-rate', async (req, res) => {
 
 // Route to fetch multiple P2P exchange rates for Markets tab
 app.get('/api/p2p-rates', async (req, res) => {
-  const fiats = ['MMK', 'THB', 'VND'];
-  const fallbacks = { MMK: 4200, THB: 36.5, VND: 25000 };
+  const p2pFiats = ['MMK', 'THB', 'VND', 'SGD', 'BDT', 'CNY', 'MYR', 'JPY', 'KRW', 'RUB', 'INR'];
+  const fallbacks = { 
+    MMK: 4250, 
+    THB: 36.5, 
+    VND: 25000,
+    SGD: 1.35,
+    EUR: 0.92,
+    BDT: 110.5,
+    CNY: 7.23,
+    MYR: 4.75,
+    USD: 1.00,
+    GBP: 0.79,
+    JPY: 153.20,
+    NZD: 1.69,
+    AUD: 1.54,
+    KRW: 1385.0,
+    RUB: 93.50,
+    INR: 83.50,
+    XAU: 0.000425, // Gold
+    XAG: 0.03508,  // Silver
+    XCU: 0.2222,   // Copper
+    OIL: 0.0125    // Oil (approx $80/barrel)
+  };
   
   try {
     const fetchFiat = async (fiat) => {
@@ -140,19 +161,39 @@ app.get('/api/p2p-rates', async (req, res) => {
       return fallbacks[fiat]; // Fallback if API fails or returns empty
     };
 
-    const results = await Promise.all(fiats.map(fetchFiat));
+    const results = await Promise.all(p2pFiats.map(fetchFiat));
+    
+    const dataObj = { ...fallbacks }; // Start with all fallbacks (which includes USD, EUR, etc.)
+    p2pFiats.forEach((fiat, index) => {
+      dataObj[fiat] = results[index];
+    });
     
     res.json({
       success: true,
-      data: {
-        MMK: results[0],
-        THB: results[1],
-        VND: results[2]
-      }
+      data: dataObj
     });
   } catch (error) {
     console.error('Error fetching P2P rates:', error.message);
     res.status(500).json({ success: false, error: 'Failed to fetch P2P rates' });
+  }
+});
+
+// Route to fetch THB rate from Binance TH
+app.get('/api/th-ticker', async (req, res) => {
+  try {
+    // If the cloud-thailand domain is required, you can replace the URL below:
+    // https://cloud-thailand.qa1fdg.net/rest/api/v3/ticker/price?symbol=USDTTHB
+    const response = await axios.get('https://api.binance.th/api/v1/ticker/price?symbol=USDTTHB', {
+      headers: {
+        'X-MBX-APIKEY': process.env.BINANCE_TH_API_KEY
+      }
+    });
+    
+    res.json({ success: true, price: parseFloat(response.data.price) });
+  } catch (error) {
+    console.error('Error fetching TH ticker:', error.response?.data || error.message);
+    // Fallback if API fails
+    res.json({ success: true, price: 36.5 });
   }
 });
 

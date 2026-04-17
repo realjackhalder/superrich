@@ -17,6 +17,7 @@ export default function ChartWidget({ data, interval, onIntervalChange }) {
       layout: {
         background: { type: 'solid', color: '#181A20' }, // Binance panel color
         textColor: '#848E9C',
+        attributionLogo: false,
       },
       grid: {
         vertLines: { color: '#2B3139' },

@@ -13,28 +13,51 @@ export function useBinanceMarketData(symbol = 'usdtbrl', interval = '1m') {
   const multiplierRef = useRef(900); // Default fallback
 
   useEffect(() => {
+    let apiSymbol = symbol;
+    const isFiat = symbol.includes('/');
+    if (isFiat) apiSymbol = 'USDTBRL';
+
     // 1. Fetch live P2P rate and initial historical kline data via REST API
     const fetchHistoricalData = async () => {
       try {
-        // Fetch P2P Rate
-        let p2pRate = 4500;
-        try {
-          const p2pRes = await fetch('http://localhost:3001/api/p2p-rate');
-          const p2pData = await p2pRes.json();
-          if (p2pData.success && p2pData.price) {
-            p2pRate = p2pData.price;
+        let targetRate = null;
+
+        if (isFiat) {
+          try {
+            const p2pRes = await fetch('http://localhost:3001/api/p2p-rates');
+            const p2pData = await p2pRes.json();
+            if (p2pData.success && p2pData.data) {
+              const r = p2pData.data;
+              // Add THB rate properly via th-ticker if needed, or rely on p2p-rates fallback
+              if (symbol === 'USDT/MMK') targetRate = r.MMK;
+              else if (symbol === 'USDT/THB') {
+                const th = await fetch('http://localhost:3001/api/th-ticker').then(res => res.json());
+                targetRate = th.success && th.price ? th.price : r.THB;
+              }
+              else if (symbol === 'USDT/VND') targetRate = r.VND;
+              else if (symbol === 'THB/MMK') targetRate = r.MMK / r.THB;
+              else if (symbol === 'THB/VND') targetRate = r.VND / r.THB;
+              else if (symbol === 'MMK/VND') targetRate = r.VND / r.MMK;
+              else if (symbol === 'SGD/MMK') targetRate = r.MMK / r.SGD;
+              else if (symbol === 'EUR/MMK') targetRate = r.MMK / r.EUR;
+              else if (symbol === 'BDT/MMK') targetRate = r.MMK / r.BDT;
+              else if (symbol === 'CNY/MMK') targetRate = r.MMK / r.CNY;
+              else if (symbol === 'MYR/MMK') targetRate = r.MMK / r.MYR;
+            }
+          } catch (e) {
+            console.warn("Failed to fetch P2P rates, using fallback shape.");
           }
-        } catch (e) {
-          console.warn("Failed to fetch P2P rate, using fallback.");
         }
 
-        const res = await fetch(`https://data-api.binance.vision/api/v3/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=100`);
+        const res = await fetch(`https://data-api.binance.vision/api/v3/klines?symbol=${apiSymbol.toUpperCase()}&interval=${interval}&limit=100`);
         const data = await res.json();
         
-        // Calculate dynamic multiplier based on the latest base close price
-        const latestBaseClose = parseFloat(data[data.length - 1][4]);
-        multiplierRef.current = p2pRate / latestBaseClose;
-        const multiplier = multiplierRef.current;
+        let multiplier = 1;
+        if (isFiat) {
+          const latestBaseClose = parseFloat(data[data.length - 1][4]);
+          multiplier = (targetRate || 4200) / latestBaseClose;
+        }
+        multiplierRef.current = multiplier;
         
         const formattedKlines = data.map(d => ({
           time: d[0] / 1000,
@@ -62,7 +85,7 @@ export function useBinanceMarketData(symbol = 'usdtbrl', interval = '1m') {
     fetchHistoricalData();
 
     // 2. Connect to Binance WebSocket for live kline updates
-    const wsUrl = `wss://stream.binance.com:9443/ws/${symbol}@kline_${interval}`;
+    const wsUrl = `wss://stream.binance.com:9443/ws/${apiSymbol.toLowerCase()}@kline_${interval}`;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;
 

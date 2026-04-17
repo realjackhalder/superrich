@@ -4,14 +4,18 @@ import ChartWidget from './components/ChartWidget';
 import OrderBook from './components/OrderBook';
 import ExchangeCalculator from './components/ExchangeCalculator';
 import Markets from './components/Markets';
+import ExchangeRatesBoard from './components/ExchangeRatesBoard';
+import MiniMarketsList from './components/MiniMarketsList';
+import MarketTrades from './components/MarketTrades';
 import { useBinanceMarketData } from './hooks/useBinanceMarketData';
 import { useBinanceAccount } from './hooks/useBinanceAccount';
 
 function App() {
   const [chartInterval, setChartInterval] = useState('1m');
-  const { currentPrice, priceChange24h, klines, orderBook, isError } = useBinanceMarketData('usdtbrl', chartInterval);
+  const [selectedMarket, setSelectedMarket] = useState('USDT/MMK');
+  const { currentPrice, priceChange24h, klines, orderBook, isError } = useBinanceMarketData(selectedMarket, chartInterval);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState('Exchange');
+  const [activeTab, setActiveTab] = useState('Exchange Rates');
   const { balances, isLoading: isLoadingBalance } = useBinanceAccount(isLoggedIn);
 
   const isPriceUp = priceChange24h >= 0;
@@ -26,7 +30,7 @@ function App() {
             <span>SuperRich</span>
           </div>
           <nav className="hidden md:flex space-x-4 text-sm font-medium text-textMuted">
-            {['Exchange', 'Markets', 'Earn', 'Wallet'].map(tab => (
+            {['Exchange Rates', 'Markets', 'Earn', 'Wallet'].map(tab => (
               <button 
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -86,72 +90,89 @@ function App() {
         </div>
       </header>
 
-      {/* Ticker Bar */}
-      <div className="h-16 flex items-center px-4 lg:px-6 bg-[#181A20] border-b border-[#2B3139] space-x-8 overflow-x-auto no-scrollbar">
-        <div className="flex flex-col min-w-[120px]">
-          <h1 className="text-xl font-bold text-textMain flex items-center">
-            USDT/MMK
-          </h1>
-          <a href="#" className="text-xs text-emeraldGreen underline underline-offset-2">Superrich Rate</a>
-        </div>
-
-        <div className="flex flex-col">
-          <span className="text-xs text-textMuted">Price</span>
-          <span className={`text-sm font-bold ${isPriceUp ? 'text-emeraldGreen' : 'text-roseRed'}`}>
-            {currentPrice ? currentPrice.toFixed(2) : <Loader className="w-4 h-4 animate-spin text-textMuted inline" />}
-          </span>
-        </div>
-
-        <div className="flex flex-col">
-          <span className="text-xs text-textMuted">24h Change</span>
-          <span className={`text-sm font-medium ${isPriceUp ? 'text-emeraldGreen' : 'text-roseRed'}`}>
-            {isPriceUp ? '+' : ''}{priceChange24h.toFixed(2)}%
-          </span>
-        </div>
-
-        <div className="flex flex-col hidden sm:flex">
-          <span className="text-xs text-textMuted">24h High</span>
-          <span className="text-sm font-medium text-textMain">
-            {klines.length > 0 ? Math.max(...klines.map(k => k.high)).toFixed(2) : '---'}
-          </span>
-        </div>
-
-        <div className="flex flex-col hidden sm:flex">
-          <span className="text-xs text-textMuted">24h Low</span>
-          <span className="text-sm font-medium text-textMain">
-            {klines.length > 0 ? Math.min(...klines.map(k => k.low)).toFixed(2) : '---'}
-          </span>
-        </div>
-      </div>
-
-      {/* Main Content Grid */}
-      {activeTab === 'Exchange' ? (
-        <main className="flex-1 p-2 lg:p-4 grid grid-cols-1 lg:grid-cols-12 gap-2 lg:gap-4 overflow-hidden">
-
-          {/* Left Column: Chart */}
-          <div className="lg:col-span-6 xl:col-span-7 flex flex-col gap-4 order-1">
-            {isError ? (
-              <div className="flex-1 bg-panel rounded-lg flex items-center justify-center text-roseRed">
-                Failed to connect to market data stream.
-              </div>
-            ) : (
-              <ChartWidget data={klines} interval={chartInterval} onIntervalChange={setChartInterval} />
-            )}
-          </div>
-
-          {/* Center Column: Order Book */}
-          <div className="lg:col-span-3 xl:col-span-2 flex flex-col order-3 lg:order-2">
-            <OrderBook currentPrice={currentPrice} orderBook={orderBook} />
-          </div>
-
-          {/* Right Column: Calculator/Action */}
-          <div className="lg:col-span-3 xl:col-span-3 flex flex-col order-2 lg:order-3">
-            <ExchangeCalculator currentPrice={currentPrice} />
-          </div>
-
-        </main>
+      {/* Main Content Area */}
+      {activeTab === 'Exchange Rates' ? (
+        <ExchangeRatesBoard />
       ) : activeTab === 'Markets' ? (
-        <Markets />
+        <Markets onSelectMarket={(symbol) => {
+          setSelectedMarket(symbol);
+          setActiveTab('Exchange Rates');
+        }} />
+      ) : activeTab === 'Legacy Exchange' ? (
+        <>
+          {/* Ticker Bar */}
+          <div className="h-16 flex items-center px-4 lg:px-6 bg-[#181A20] border-b border-[#2B3139] space-x-8 overflow-x-auto no-scrollbar">
+            <div className="flex flex-col min-w-[120px]">
+              <h1 className="text-xl font-bold text-textMain flex items-center">
+                {selectedMarket}
+              </h1>
+              <a href="#" className="text-xs text-emeraldGreen underline underline-offset-2">Superrich Rate</a>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs text-textMuted">Price</span>
+              <span className={`text-sm font-bold ${isPriceUp ? 'text-emeraldGreen' : 'text-roseRed'}`}>
+                {currentPrice ? currentPrice.toFixed(2) : <Loader className="w-4 h-4 animate-spin text-textMuted inline" />}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs text-textMuted">24h Change</span>
+              <span className={`text-sm font-medium ${isPriceUp ? 'text-emeraldGreen' : 'text-roseRed'}`}>
+                {isPriceUp ? '+' : ''}{priceChange24h.toFixed(2)}%
+              </span>
+            </div>
+
+            <div className="flex flex-col hidden sm:flex">
+              <span className="text-xs text-textMuted">24h High</span>
+              <span className="text-sm font-medium text-textMain">
+                {klines.length > 0 ? Math.max(...klines.map(k => k.high)).toFixed(2) : '---'}
+              </span>
+            </div>
+
+            <div className="flex flex-col hidden sm:flex">
+              <span className="text-xs text-textMuted">24h Low</span>
+              <span className="text-sm font-medium text-textMain">
+                {klines.length > 0 ? Math.min(...klines.map(k => k.low)).toFixed(2) : '---'}
+              </span>
+            </div>
+          </div>
+          
+          <main className="flex-1 p-1 lg:p-2 grid grid-cols-1 lg:grid-cols-12 gap-1 lg:gap-2 h-[calc(100vh-128px)] overflow-hidden bg-[#0B0E11]">
+
+            {/* Left Column: Order Book */}
+            <div className="lg:col-span-3 xl:col-span-2 flex flex-col order-3 lg:order-1 bg-[#181A20] rounded border border-[#2B3139] overflow-hidden">
+              <OrderBook currentPrice={currentPrice} orderBook={orderBook} />
+            </div>
+
+            {/* Center Column: Chart + Calc */}
+            <div className="lg:col-span-6 xl:col-span-7 flex flex-col gap-1 lg:gap-2 order-1 lg:order-2">
+              <div className="flex-[3] bg-[#181A20] rounded border border-[#2B3139] overflow-hidden min-h-[400px]">
+                {isError ? (
+                  <div className="w-full h-full flex items-center justify-center text-roseRed">
+                    Failed to connect to market data stream.
+                  </div>
+                ) : (
+                  <ChartWidget data={klines} interval={chartInterval} onIntervalChange={setChartInterval} />
+                )}
+              </div>
+              <div className="flex-[1] bg-[#181A20] rounded border border-[#2B3139] overflow-hidden min-h-[250px]">
+                <ExchangeCalculator currentPrice={currentPrice} />
+              </div>
+            </div>
+
+            {/* Right Column: Mini Markets + Trades */}
+            <div className="lg:col-span-3 xl:col-span-3 flex flex-col gap-1 lg:gap-2 order-2 lg:order-3">
+              <div className="flex-[1] bg-[#181A20] rounded border border-[#2B3139] overflow-hidden min-h-[250px]">
+                <MiniMarketsList selectedMarket={selectedMarket} onSelectMarket={setSelectedMarket} />
+              </div>
+              <div className="flex-[1] bg-[#181A20] rounded border border-[#2B3139] overflow-hidden min-h-[250px]">
+                <MarketTrades currentPrice={currentPrice} />
+              </div>
+            </div>
+
+          </main>
+        </>
       ) : (
         <main className="flex-1 flex items-center justify-center text-textMuted flex-col space-y-4">
           <Shield className="w-16 h-16 opacity-20" />
