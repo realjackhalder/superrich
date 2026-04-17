@@ -24,14 +24,15 @@ export function useBinanceMarketData(symbol = 'usdtbrl', interval = '1m') {
 
         if (isFiat) {
           try {
-            const p2pRes = await fetch('http://localhost:3001/api/p2p-rates');
+            const apiBase = `http://${window.location.hostname}:3001`;
+            const p2pRes = await fetch(`${apiBase}/api/p2p-rates`);
             const p2pData = await p2pRes.json();
             if (p2pData.success && p2pData.data) {
               const r = p2pData.data;
               // Add THB rate properly via th-ticker if needed, or rely on p2p-rates fallback
               if (symbol === 'USDT/MMK') targetRate = r.MMK;
               else if (symbol === 'USDT/THB') {
-                const th = await fetch('http://localhost:3001/api/th-ticker').then(res => res.json());
+                const th = await fetch(`${apiBase}/api/th-ticker`).then(res => res.json());
                 targetRate = th.success && th.price ? th.price : r.THB;
               }
               else if (symbol === 'USDT/VND') targetRate = r.VND;

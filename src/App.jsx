@@ -30,12 +30,12 @@ function App() {
             <Shield className="w-8 h-8" />
             <span>SuperRich</span>
           </div>
-          <nav className="hidden md:flex space-x-4 text-sm font-medium text-textMuted">
+          <nav className="flex space-x-3 sm:space-x-6 text-xs sm:text-sm font-medium text-textMuted">
             {['Exchange Rates', 'Markets', 'Wallet'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`transition-colors ${activeTab === tab ? 'text-textMain font-bold' : 'hover:text-textMain'}`}
+                className={`transition-colors whitespace-nowrap ${activeTab === tab ? 'text-textMain font-bold border-b-2 border-[#FCD535] pb-1' : 'hover:text-textMain pb-1'}`}
               >
                 {tab}
               </button>
@@ -43,15 +43,15 @@ function App() {
           </nav>
         </div>
         <div className="flex items-center space-x-4 text-textMuted">
-          <div className="hidden md:flex items-center space-x-3 text-sm">
+          <div className="flex items-center space-x-3 text-sm">
             {isLoggedIn ? (
               <>
-                <button className="bg-[#2B3139] hover:bg-[#2B3139]/80 text-textMain px-3 py-1.5 rounded font-medium transition-colors">
+                <button className="hidden sm:block bg-[#2B3139] hover:bg-[#2B3139]/80 text-textMain px-3 py-1.5 rounded font-medium transition-colors">
                   Deposit
                 </button>
                 <div className="flex items-center space-x-2 text-textMain px-2">
                   <Wallet className="w-4 h-4 text-emeraldGreen" />
-                  <span className="font-medium">
+                  <span className="font-medium text-xs sm:text-sm">
                     {isLoadingBalance ? <Loader className="w-3 h-3 animate-spin inline" /> : `${parseFloat(balances.USDT).toFixed(2)} USDT`}
                   </span>
                 </div>
@@ -71,7 +71,6 @@ function App() {
               </>
             ) : null}
           </div>
-          <Menu className="w-6 h-6 md:hidden hover:text-textMain cursor-pointer" />
         </div>
       </header>
 

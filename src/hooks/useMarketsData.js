@@ -12,9 +12,10 @@ export function useMarketsData() {
       try {
         // 1. Fetch Crypto Markets and Market Caps
         const cryptoSymbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "XRPUSDT", "ADAUSDT"];
+        const apiBase = `http://${window.location.hostname}:3001`;
         const [cryptoRes, capsRes] = await Promise.all([
           fetch(`https://api.binance.com/api/v3/ticker/24hr?symbols=${JSON.stringify(cryptoSymbols)}`),
-          fetch('http://localhost:3001/api/market-caps')
+          fetch(`${apiBase}/api/market-caps`)
         ]);
         
         const cryptoData = await cryptoRes.json();
@@ -41,7 +42,7 @@ export function useMarketsData() {
           }
 
         // 2. Fetch MEXC Tickers for Commodities and extra cryptos
-        const mexcRes = await fetch('http://localhost:3001/api/mexc-ticker');
+        const mexcRes = await fetch(`${apiBase}/api/mexc-ticker`);
         const mexcResult = await mexcRes.json();
         let mexcData = [];
         if (mexcResult.success && Array.isArray(mexcResult.data)) {
@@ -50,8 +51,8 @@ export function useMarketsData() {
 
         // 3. Fetch Fiat P2P Rates and TH Ticker
         const [p2pRes, thRes] = await Promise.all([
-          fetch('http://localhost:3001/api/p2p-rates'),
-          fetch('http://localhost:3001/api/th-ticker')
+          fetch(`${apiBase}/api/p2p-rates`),
+          fetch(`${apiBase}/api/th-ticker`)
         ]);
         
         const p2pData = await p2pRes.json();

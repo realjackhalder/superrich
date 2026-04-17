@@ -28,9 +28,9 @@ export default function Markets({ onSelectMarket }) {
 
   const toggleFavorite = (symbol, e) => {
     e.stopPropagation();
-    setFavorites(prev => 
-      prev.includes(symbol) 
-        ? prev.filter(s => s !== symbol) 
+    setFavorites(prev =>
+      prev.includes(symbol)
+        ? prev.filter(s => s !== symbol)
         : [...prev, symbol]
     );
   };
@@ -75,7 +75,7 @@ export default function Markets({ onSelectMarket }) {
   });
 
   const allMarkets = [...cleanFiatMarkets, ...cryptoMarkets];
-  
+
   let filteredData = allMarkets;
 
   // Tab filtering
@@ -96,7 +96,7 @@ export default function Markets({ onSelectMarket }) {
   // Search filtering
   if (searchQuery.trim()) {
     const q = searchQuery.trim().toLowerCase();
-    filteredData = filteredData.filter(m => 
+    filteredData = filteredData.filter(m =>
       m.symbol.toLowerCase().includes(q) ||
       m.baseAsset.toLowerCase().includes(q) ||
       m.quoteAsset.toLowerCase().includes(q)
@@ -107,7 +107,7 @@ export default function Markets({ onSelectMarket }) {
     <div className="flex-1 p-4 lg:p-8 overflow-y-auto w-full max-w-7xl mx-auto space-y-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-textMain mb-6">Markets Overview</h1>
-        
+
         {/* Main Tabs */}
         <div className="flex items-center justify-between border-b border-[#2B3139] mb-4 overflow-x-auto no-scrollbar pb-2">
           <div className="flex space-x-6 text-sm font-medium">
@@ -115,11 +115,10 @@ export default function Markets({ onSelectMarket }) {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`whitespace-nowrap transition-colors pb-2 -mb-[9px] ${
-                  activeTab === tab 
-                    ? 'text-textMain border-b-2 border-[#FCD535]' 
+                className={`whitespace-nowrap transition-colors pb-2 -mb-[9px] ${activeTab === tab
+                    ? 'text-textMain border-b-2 border-[#FCD535]'
                     : 'text-textMuted hover:text-textMain'
-                }`}
+                  }`}
               >
                 {tab === 'Favorites' && <Star className="w-3.5 h-3.5 inline-block mr-1 -mt-0.5" />}
                 {tab}
@@ -140,7 +139,7 @@ export default function Markets({ onSelectMarket }) {
                   placeholder="Search pairs..."
                   className="bg-transparent text-white text-sm px-3 py-2 outline-none w-full placeholder:text-[#848E9C]"
                 />
-                <button 
+                <button
                   onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
                   className="text-[#848E9C] hover:text-white px-2 shrink-0 transition-colors"
                 >
@@ -148,7 +147,7 @@ export default function Markets({ onSelectMarket }) {
                 </button>
               </div>
             ) : (
-              <button 
+              <button
                 onClick={() => setSearchOpen(true)}
                 className="text-textMuted hover:text-textMain cursor-pointer transition-colors"
               >
@@ -164,13 +163,12 @@ export default function Markets({ onSelectMarket }) {
             <table className="w-full text-left text-sm whitespace-nowrap">
               <thead className="text-textMuted bg-[#181A20] border-b border-[#2B3139]">
                 <tr>
-                  <th className="px-4 py-4 font-medium">Crypto</th>
-                  <th className="px-4 py-4 font-medium text-right">Price</th>
-                  <th className="px-4 py-4 font-medium text-right">24h Change</th>
-                  <th className="px-4 py-4 font-medium text-right">24h High/24h Low</th>
-                  <th className="px-4 py-4 font-medium text-right">24h Volume</th>
-                  <th className="px-4 py-4 font-medium text-right">Market Cap</th>
-                  <th className="px-4 py-4 font-medium text-center">Action</th>
+                  <th className="px-2 sm:px-4 py-4 font-medium">Pair</th>
+                  <th className="px-2 sm:px-4 py-4 font-medium text-right">Price</th>
+                  <th className="px-2 sm:px-4 py-4 font-medium text-right">24h Change</th>
+                  <th className="px-4 py-4 font-medium text-right hidden lg:table-cell">24h High/Low</th>
+                  <th className="px-4 py-4 font-medium text-right hidden sm:table-cell">Volume</th>
+                  <th className="px-4 py-4 font-medium text-right hidden md:table-cell">Market Cap</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#2B3139]">
@@ -181,8 +179,8 @@ export default function Markets({ onSelectMarket }) {
                   const isFav = favorites.includes(item.symbol);
 
                   return (
-                    <tr 
-                      key={index} 
+                    <tr
+                      key={index}
                       onClick={() => {
                         if (item.source === 'Binance') {
                           window.open('https://www.binance.com/register?ref=199653366', '_blank');
@@ -194,72 +192,64 @@ export default function Markets({ onSelectMarket }) {
                       className="hover:bg-[#2B3139]/50 transition-colors cursor-pointer group"
                     >
                       {/* Crypto / Pair */}
-                      <td className="px-4 py-4">
-                        <div className="flex items-center space-x-3">
-                          <Star 
-                            className={`w-4 h-4 transition-colors cursor-pointer shrink-0 ${
-                              isFav 
-                                ? 'text-[#FCD535] fill-[#FCD535]' 
+                      <td className="px-2 sm:px-4 py-4">
+                        <div className="flex items-center space-x-2 sm:space-x-3">
+                          <Star
+                            className={`w-3.5 h-3.5 sm:w-4 h-4 transition-colors cursor-pointer shrink-0 ${isFav
+                                ? 'text-[#FCD535] fill-[#FCD535]'
                                 : 'text-textMuted hover:text-[#FCD535]'
-                            }`}
+                              }`}
                             onClick={(e) => toggleFavorite(item.symbol, e)}
                           />
                           <div className="flex items-center">
-                            <span className="font-bold text-textMain text-base">{item.baseAsset}</span>
-                            <span className="text-textMuted text-xs ml-1">/{item.quoteAsset}</span>
+                            <span className="font-bold text-textMain text-sm sm:text-base">{item.baseAsset}</span>
+                            <span className="text-textMuted text-[10px] sm:text-xs ml-0.5 sm:ml-1">/{item.quoteAsset}</span>
                           </div>
                         </div>
                       </td>
-                      
+
                       {/* Price */}
-                      <td className="px-4 py-4 text-right">
-                        <span className="font-medium text-textMain">{formatPrice(item.price)}</span>
+                      <td className="px-2 sm:px-4 py-4 text-right">
+                        <span className="font-medium text-textMain text-sm sm:text-base">{formatPrice(item.price)}</span>
                       </td>
-                      
+
                       {/* 24h Change */}
-                      <td className="px-4 py-4 text-right">
+                      <td className="px-2 sm:px-4 py-4 text-right">
                         {item.change24h !== null ? (
-                          <span className={`font-medium ${isPositive ? 'text-emeraldGreen' : 'text-roseRed'}`}>
+                          <span className={`font-medium text-sm sm:text-base ${isPositive ? 'text-emeraldGreen' : 'text-roseRed'}`}>
                             {isPositive ? '+' : ''}{item.change24h.toFixed(2)}%
                           </span>
                         ) : (
                           <span className="text-textMuted">-</span>
                         )}
                       </td>
-                      
+
                       {/* 24h High/Low */}
-                      <td className="px-4 py-4 text-right text-textMain">
+                      <td className="px-4 py-4 text-right text-textMain hidden lg:table-cell">
                         {formattedHigh} / {formattedLow}
                       </td>
-                      
+
                       {/* 24h Volume */}
-                      <td className="px-4 py-4 text-right text-textMain">
+                      <td className="px-4 py-4 text-right text-textMain hidden sm:table-cell">
                         {item.volume24h !== null ? formatNumberWithSuffix(item.volume24h) : '-'}
                       </td>
-                      
+
                       {/* Market Cap */}
-                      <td className="px-4 py-4 text-right text-textMain">
+                      <td className="px-4 py-4 text-right text-textMain hidden md:table-cell">
                         {item.marketCap ? '$' + formatNumberWithSuffix(item.marketCap) : '-'}
-                      </td>
-                      
-                      {/* Action */}
-                      <td className="px-4 py-4 text-center">
-                        <div className="flex justify-center text-textMuted group-hover:text-[#FCD535] transition-colors">
-                          <ArrowRightLeft className="w-4 h-4" />
-                        </div>
                       </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
-            
+
             {filteredData.length === 0 && (
               <div className="w-full py-12 text-center text-textMuted">
-                {activeTab === 'Favorites' 
-                  ? 'No favorites yet. Click the ★ icon on any pair to add it.' 
-                  : searchQuery 
-                    ? `No results for "${searchQuery}"` 
+                {activeTab === 'Favorites'
+                  ? 'No favorites yet. Click the ★ icon on any pair to add it.'
+                  : searchQuery
+                    ? `No results for "${searchQuery}"`
                     : 'No markets found matching the selected criteria.'}
               </div>
             )}
