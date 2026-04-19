@@ -26,10 +26,13 @@ function App() {
       {/* Navbar */}
       <header className="h-16 flex items-center justify-between px-4 lg:px-6 bg-[#181A20] border-b border-[#2B3139]">
         <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-2 text-[#FCD535] font-bold text-xl tracking-tight">
+          <button 
+            onClick={() => setActiveTab('Exchange Rates')}
+            className="flex items-center space-x-2 text-[#FCD535] font-bold text-xl tracking-tight hover:opacity-80 transition-opacity"
+          >
             <Shield className="w-8 h-8" />
             <span>SuperRich</span>
-          </div>
+          </button>
           <nav className="flex space-x-3 sm:space-x-6 text-xs sm:text-sm font-medium text-textMuted">
             {['Exchange Rates', 'Markets', 'Wallet'].map(tab => (
               <button
@@ -181,36 +184,59 @@ function App() {
       )}
 
       {/* Footer */}
-      <footer className="bg-[#181A20] border-t border-[#2B3139] py-8 px-6">
-        <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-6">
+      <footer className="bg-[#181A20] border-t border-[#2B3139] py-12 px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
           {/* Logo & Description */}
-          <div className="flex flex-col items-center space-y-2">
-            <div className="flex items-center space-x-2 text-[#FCD535] font-bold text-xl">
+          <div className="space-y-4">
+            <button 
+              onClick={() => setActiveTab('Exchange Rates')}
+              className="flex items-center justify-center md:justify-start space-x-2 text-[#FCD535] font-bold text-xl hover:opacity-80 transition-opacity"
+            >
               <Shield className="w-6 h-6" />
               <span>SuperRich</span>
-            </div>
-            <p className="text-textMuted text-xs leading-relaxed max-w-xl">
+            </button>
+            <p className="text-textMuted text-xs leading-relaxed max-w-xs mx-auto md:mx-0">
               Real-time market data for the Myanmar people. Empowering traders with live global rates.
+            </p>
+            <p className="text-[#F6465D] text-[10px] font-bold uppercase tracking-wider">
+              Not affiliated with Super Rich Thailand
             </p>
           </div>
 
-          {/* Links */}
-          <div className="flex items-center justify-center space-x-6 text-[10px] font-medium text-textMuted/60 tracking-wider uppercase">
-            <a href="#" className="hover:text-textMain transition-colors">Privacy</a>
-            <a href="#" className="hover:text-textMain transition-colors">Terms</a>
-            <a href="#" className="hover:text-textMain transition-colors">API</a>
+          {/* Links & Contact */}
+          <div className="flex flex-col space-y-4">
+            <h3 className="text-[#EAECEF] text-xs font-bold uppercase tracking-widest">Support & API</h3>
+            <div className="flex flex-col space-y-2 text-[11px] text-textMuted">
+              <div className="flex items-center justify-center md:justify-start space-x-2">
+                <span>API:</span>
+                <span className="text-[#FCD535] font-mono">api.superrich.tech</span>
+              </div>
+              <div className="flex items-center justify-center md:justify-start space-x-2">
+                <span>Contact:</span>
+                <a href="mailto:info@superrich.tech" className="text-textMain hover:underline">info@superrich.tech</a>
+              </div>
+            </div>
           </div>
 
-          {/* Bottom Row: Copyright & Love */}
-          <div className="w-full pt-6 border-t border-[#2B3139]/30 flex flex-col items-center space-y-3">
-            <div className="text-[10px] text-textMuted/50 tracking-widest uppercase">
-              © {new Date().getFullYear()} SuperRich.
+          {/* Donate */}
+          <div className="flex flex-col items-center md:items-start space-y-4">
+            <h3 className="text-[#EAECEF] text-xs font-bold uppercase tracking-widest">Donate Us</h3>
+            <div className="rounded overflow-hidden">
+              <img 
+                src="/donate.jpg" 
+                alt="Donate QR Code" 
+                className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+              />
             </div>
-            <div className="flex items-center space-x-1.5 opacity-80">
-              <span className="text-[9px] uppercase tracking-tighter text-textMuted">Made with</span>
-              <span className="text-roseRed text-xs">❤️</span>
-            </div>
+            <p className="text-[9px] text-textMuted text-center md:text-left opacity-60">
+              Scan to support our project
+            </p>
           </div>
+        </div>
+
+        {/* Bottom Row */}
+        <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-[#2B3139]/30 flex justify-center text-[10px] text-textMuted/50 tracking-widest uppercase">
+          <div>© {new Date().getFullYear()} SuperRich. All rights reserved.</div>
         </div>
       </footer>
 
