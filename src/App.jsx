@@ -184,27 +184,27 @@ function App() {
       )}
 
       {/* Footer */}
-      <footer className="bg-[#181A20] border-t border-[#2B3139] py-12 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+      <footer className="bg-[#181A20] border-t border-[#2B3139] py-8 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* Logo & Description */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <button 
               onClick={() => setActiveTab('Exchange Rates')}
-              className="flex items-center justify-center md:justify-start space-x-2 text-[#FCD535] font-bold text-xl hover:opacity-80 transition-opacity"
+              className="flex items-center justify-center md:justify-start space-x-2 text-[#FCD535] font-bold text-xl hover:opacity-80 transition-opacity mx-auto md:mx-0"
             >
               <Shield className="w-6 h-6" />
               <span>SuperRich</span>
             </button>
-            <p className="text-textMuted text-xs leading-relaxed max-w-xs mx-auto md:mx-0">
+            <p className="text-textMuted text-[11px] leading-relaxed max-w-xs mx-auto md:mx-0">
               Real-time market data for the Myanmar people. Empowering traders with live global rates.
             </p>
-            <p className="text-[#F6465D] text-[10px] font-bold uppercase tracking-wider">
+            <p className="text-[#F6465D] text-[9px] font-bold uppercase tracking-wider">
               Not affiliated with Super Rich Thailand
             </p>
           </div>
 
           {/* Links & Contact */}
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-3">
             <h3 className="text-[#EAECEF] text-xs font-bold uppercase tracking-widest">Support & API</h3>
             <div className="flex flex-col space-y-2 text-[11px] text-textMuted">
               <div className="flex items-center justify-center md:justify-start space-x-2">
@@ -219,13 +219,13 @@ function App() {
           </div>
 
           {/* Donate */}
-          <div className="flex flex-col items-center md:items-start space-y-4">
+          <div className="flex flex-col items-center md:items-start space-y-3">
             <h3 className="text-[#EAECEF] text-xs font-bold uppercase tracking-widest">Donate Us</h3>
             <div className="rounded overflow-hidden">
               <img 
                 src="/donate.jpg" 
                 alt="Donate QR Code" 
-                className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
+                className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
               />
             </div>
             <p className="text-[9px] text-textMuted text-center md:text-left opacity-60">
@@ -235,7 +235,7 @@ function App() {
         </div>
 
         {/* Bottom Row */}
-        <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-[#2B3139]/30 flex justify-center text-[10px] text-textMuted/50 tracking-widest uppercase">
+        <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-[#2B3139]/30 flex justify-center text-[10px] text-textMuted/50 tracking-widest uppercase">
           <div>© {new Date().getFullYear()} SuperRich. All rights reserved.</div>
         </div>
       </footer>
