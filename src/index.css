@@ -11,3 +11,29 @@
     scrollbar-width: none;
   }
 }
+
+/* Custom Scrollbar Design */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0E11;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2B3139;
+  border-radius: 10px;
+  border: 2px solid #0B0E11;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #474D57;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2B3139 #0B0E11;
+}

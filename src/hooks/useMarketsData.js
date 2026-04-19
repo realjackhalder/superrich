@@ -137,6 +137,7 @@ export function useMarketsData() {
             createFiatPair('USDT', 'KRW', rates.KRW),
             createFiatPair('USDT', 'RUB', rates.RUB),
             createFiatPair('USDT', 'INR', rates.INR),
+            createFiatPair('USDT', 'TWD', rates.TWD),
             { ...createFiatPair('XAU', 'USDT', 1 / rates.XAU), symbol: 'Gold(XAUT)/USDT', baseAsset: 'Gold(XAUT)', source: 'MEXC' },
             { ...createFiatPair('XAG', 'USDT', 1 / rates.XAG), symbol: 'Silver(XAG)/USDT', baseAsset: 'Silver(XAG)', source: 'MEXC' },
             { ...createFiatPair('XCU', 'USDT', 1 / rates.XCU), symbol: 'Copper(XCU)/USDT', baseAsset: 'Copper(XCU)', source: 'MEXC' },
@@ -160,6 +161,7 @@ export function useMarketsData() {
             createFiatPair('BDT', 'MMK', rates.MMK / rates.BDT),
             createFiatPair('CNY', 'MMK', rates.MMK / rates.CNY),
             createFiatPair('MYR', 'MMK', rates.MMK / rates.MYR),
+            createFiatPair('TWD', 'MMK', rates.MMK / rates.TWD),
           ];
           
           // Add some top MEXC cryptos that are not in Binance list

@@ -150,7 +150,7 @@ app.get('/api/p2p-rate', async (req, res) => {
 
 // Route to fetch multiple P2P exchange rates for Markets tab
 app.get('/api/p2p-rates', async (req, res) => {
-  const p2pFiats = ['MMK', 'THB', 'VND', 'SGD', 'BDT', 'CNY', 'MYR', 'JPY', 'KRW', 'RUB', 'INR'];
+  const p2pFiats = ['MMK', 'THB', 'VND', 'SGD', 'BDT', 'CNY', 'MYR', 'JPY', 'KRW', 'RUB', 'INR', 'TWD'];
   const fallbacks = { 
     MMK: 4250, 
     THB: 36.5, 
@@ -171,7 +171,8 @@ app.get('/api/p2p-rates', async (req, res) => {
     XAU: 0.000425, // Gold
     XAG: 0.03508,  // Silver
     XCU: 0.2222,   // Copper
-    OIL: 0.0125    // Oil (approx $80/barrel)
+    OIL: 0.0125,   // Oil (approx $80/barrel)
+    TWD: 32.5      // New Taiwan Dollar
   };
   
   try {

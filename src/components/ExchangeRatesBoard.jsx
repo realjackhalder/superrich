@@ -35,7 +35,7 @@ export default function ExchangeRatesBoard() {
   const flagMap = {
     USD: 'us', GBP: 'gb', EUR: 'eu', JPY: 'jp', SGD: 'sg',
     THB: 'th', VND: 'vn', BDT: 'bd', CNY: 'cn', MYR: 'my',
-    NZD: 'nz', AUD: 'au', KRW: 'kr', RUB: 'ru', INR: 'in'
+    NZD: 'nz', AUD: 'au', KRW: 'kr', RUB: 'ru', INR: 'in', TWD: 'tw'
   };
 
   const metalEmojis = {
@@ -45,7 +45,7 @@ export default function ExchangeRatesBoard() {
     OIL: '🛢️', // Oil
   };
 
-  const displayCurrencies = ['USD', 'GBP', 'EUR', 'JPY', 'SGD', 'THB', 'CNY', 'MYR', 'BDT', 'VND', 'NZD', 'AUD', 'KRW', 'RUB', 'INR', 'XAU', 'XAG', 'XCU', 'OIL'];
+  const displayCurrencies = ['USD', 'GBP', 'EUR', 'JPY', 'SGD', 'THB', 'CNY', 'MYR', 'TWD', 'BDT', 'VND', 'NZD', 'AUD', 'KRW', 'RUB', 'INR', 'XAU', 'XAG', 'XCU', 'OIL'];
 
   // Filter and map fiat markets to get Buying/Selling rates
   const rateData = displayCurrencies.map(cur => {
