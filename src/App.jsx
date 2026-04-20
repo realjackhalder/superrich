@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Menu, User, Wallet, Bell, Loader, Copy, Check, Facebook } from 'lucide-react';
+import { Shield, Menu, User, Wallet, Bell, Loader, Copy, Check } from 'lucide-react';
 import ChartWidget from './components/ChartWidget';
 import OrderBook from './components/OrderBook';
 import ExchangeCalculator from './components/ExchangeCalculator';
@@ -251,7 +251,9 @@ function App() {
                 className="text-textMuted hover:text-[#FCD535] transition-colors"
                 title="Follow us on Facebook"
               >
-                <Facebook size={18} />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.324v-21.35c0-.732-.593-1.325-1.325-1.325z" />
+                </svg>
               </a>
               <a 
                 href="https://x.com/superrich_tech" 
@@ -304,8 +306,29 @@ function App() {
               </div>
             </div>
 
-            <p className="text-[8px] text-textMuted text-center opacity-60 italic">
-              Scan to support our project
+            <div className="flex flex-col items-center space-y-4 pt-2 w-full">
+              <div className="flex flex-col items-center space-y-1 w-full max-w-[240px]">
+                <div className="flex items-center justify-between w-full px-1">
+                  <span className="text-[9px] text-textMuted uppercase font-bold tracking-tight">Bitcoin</span>
+                  <span className="text-[8px] text-[#FCD535]/70 uppercase font-bold tracking-widest">Network:BTC</span>
+                </div>
+                <div className="flex items-center space-x-2 bg-[#2B3139] px-2.5 py-2 rounded border border-[#474D57] w-full justify-between shadow-inner">
+                  <span className="text-[9px] font-mono text-textMain truncate select-all">
+                    12yhkkbbjjqC2cdujWFfCggrDGLmqta262
+                  </span>
+                  <button 
+                    onClick={() => handleCopy('12yhkkbbjjqC2cdujWFfCggrDGLmqta262')}
+                    className="text-[#FCD535] hover:scale-110 active:scale-95 transition-all flex-shrink-0 p-0.5"
+                    title="Copy BTC Address"
+                  >
+                    {copied ? <Check size={12} className="text-emeraldGreen" /> : <Copy size={12} />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-[8px] text-textMuted text-center opacity-60 italic pt-2">
+              Scan or copy to support our project
             </p>
           </div>
         </div>
