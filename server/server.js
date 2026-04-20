@@ -5,6 +5,9 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
+import hpp from 'hpp';
 
 dotenv.config();
 
@@ -14,18 +17,40 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ... (existing helper functions and routes)
-
-// Move existing routes above static serving to avoid conflicts
-// (I will keep the routes here but I need to make sure I don't delete them)
-
+// API Constants
 const API_KEY = process.env.BINANCE_API_KEY;
 const API_SECRET = process.env.BINANCE_API_SECRET;
 const BASE_URL = 'https://api.binance.com';
 const MEXC_BASE_URL = 'https://api.mexc.com';
 
+// Global Security Middleware
+app.use(helmet({
+  contentSecurityPolicy: false, // Set to false if you have trouble with TradingView or external scripts
+  crossOriginEmbedderPolicy: false
+}));
+
+// Rate Limiting Protection (DDoS protection)
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  message: { success: false, error: 'Too many requests, please try again later.' }
+});
+
+// Stricter limiter for sensitive operations (like order placement)
+const sensitiveLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5, // Limit each IP to 5 requests per minute
+  message: { success: false, error: 'Too many requests. Please wait a minute before trying again.' }
+});
+
+app.use('/api/', generalLimiter);
+app.use('/api/order', sensitiveLimiter);
+
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10kb' })); // Limit body size to prevent payload-based DDoS
+app.use(hpp()); // Prevent HTTP Parameter Pollution
 
 // Helper function to create MEXC signature (similar to Binance)
 const createMEXCSignature = (queryString) => {
