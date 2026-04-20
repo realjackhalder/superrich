@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Menu, User, Wallet, Bell, Loader } from 'lucide-react';
+import { Shield, Menu, User, Wallet, Bell, Loader, Copy, Check, Facebook } from 'lucide-react';
 import ChartWidget from './components/ChartWidget';
 import OrderBook from './components/OrderBook';
 import ExchangeCalculator from './components/ExchangeCalculator';
@@ -18,11 +18,37 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState('Exchange Rates');
   const { balances, isLoading: isLoadingBalance } = useBinanceAccount(isLoggedIn);
+  const [copied, setCopied] = useState(false);
+  const [zoomedImage, setZoomedImage] = useState(null);
+
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const isPriceUp = priceChange24h >= 0;
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
+      {/* Zoom Modal */}
+      {zoomedImage && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out transition-all duration-300"
+          onClick={() => setZoomedImage(null)}
+        >
+          <div className="relative max-w-sm w-full">
+            <img 
+              src={zoomedImage} 
+              alt="Zoomed Payment QR" 
+              className="w-full h-auto object-contain rounded-xl shadow-[0_0_50px_rgba(252,213,53,0.2)] border border-[#FCD535]/20 bg-white"
+            />
+            <p className="text-center mt-4 text-[#FCD535] font-bold tracking-widest uppercase text-xs animate-pulse">
+              Click anywhere to close
+            </p>
+          </div>
+        </div>
+      )}
       {/* Navbar */}
       <header className="h-16 flex items-center justify-between px-4 lg:px-6 bg-[#181A20] border-b border-[#2B3139]">
         <div className="flex items-center space-x-6">
@@ -216,19 +242,69 @@ function App() {
                 <a href="mailto:info@superrich.tech" className="text-textMain hover:underline">info@superrich.tech</a>
               </div>
             </div>
+            {/* Social Icons */}
+            <div className="flex items-center justify-center md:justify-start space-x-4 pt-1">
+              <a 
+                href="https://www.facebook.com/share/1CzKSYWA5q/?mibextid=wwXIfr" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-textMuted hover:text-[#FCD535] transition-colors"
+                title="Follow us on Facebook"
+              >
+                <Facebook size={18} />
+              </a>
+              <a 
+                href="https://x.com/superrich_tech" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-textMuted hover:text-[#FCD535] transition-colors"
+                title="Follow us on X"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932zm-1.294 19.497h2.039L6.482 3.239H4.293L17.607 20.65z" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           {/* Donate */}
-          <div className="flex flex-col items-center md:items-start space-y-3">
-            <h3 className="text-[#EAECEF] text-xs font-bold uppercase tracking-widest">Donate Us</h3>
-            <div className="rounded overflow-hidden">
-              <img 
-                src="/donate.jpg" 
-                alt="Donate QR Code" 
-                className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
-              />
+          <div className="flex flex-col items-center space-y-4">
+            <h3 className="text-[#EAECEF] text-xs font-bold uppercase tracking-widest text-center">Donate Us</h3>
+            
+            {/* Parallel Payment Methods */}
+            <div className="flex items-center justify-center space-x-2 sm:space-x-4 max-w-[240px]">
+              <div className="flex flex-col items-center space-y-1.5 group">
+                <div 
+                  onClick={() => setZoomedImage('/donate.jpg')}
+                  className="rounded overflow-hidden cursor-zoom-in transition-opacity hover:opacity-80"
+                >
+                  <img src="/donate.jpg" alt="Binance Pay" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+                </div>
+                <span className="text-[7px] sm:text-[8px] text-textMuted uppercase font-bold whitespace-nowrap">Binance Pay</span>
+              </div>
+              
+              <div className="flex flex-col items-center space-y-1.5 group">
+                <div 
+                  onClick={() => setZoomedImage('/promptpay.jpg')}
+                  className="rounded overflow-hidden cursor-zoom-in transition-opacity hover:opacity-80"
+                >
+                  <img src="/promptpay.jpg" alt="Prompt Pay" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+                </div>
+                <span className="text-[7px] sm:text-[8px] text-textMuted uppercase font-bold whitespace-nowrap">Prompt Pay</span>
+              </div>
+
+              <div className="flex flex-col items-center space-y-1.5 group">
+                <div 
+                  onClick={() => setZoomedImage('/kbzpay.jpg')}
+                  className="rounded overflow-hidden cursor-zoom-in transition-opacity hover:opacity-80"
+                >
+                  <img src="/kbzpay.jpg" alt="Kbz Pay" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+                </div>
+                <span className="text-[7px] sm:text-[8px] text-textMuted uppercase font-bold whitespace-nowrap">Kbz Pay</span>
+              </div>
             </div>
-            <p className="text-[9px] text-textMuted text-center md:text-left opacity-60">
+
+            <p className="text-[8px] text-textMuted text-center opacity-60 italic">
               Scan to support our project
             </p>
           </div>
