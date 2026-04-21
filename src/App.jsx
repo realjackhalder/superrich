@@ -33,14 +33,14 @@ function App() {
     <div className="min-h-screen flex flex-col font-sans">
       {/* Zoom Modal */}
       {zoomedImage && (
-        <div 
+        <div
           className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 cursor-zoom-out transition-all duration-300"
           onClick={() => setZoomedImage(null)}
         >
           <div className="relative max-w-sm w-full">
-            <img 
-              src={zoomedImage} 
-              alt="Zoomed Payment QR" 
+            <img
+              src={zoomedImage}
+              alt="Zoomed Payment QR"
               className="w-full h-auto object-contain rounded-xl shadow-[0_0_50px_rgba(252,213,53,0.2)] border border-[#FCD535]/20 bg-white"
             />
             <p className="text-center mt-4 text-[#FCD535] font-bold tracking-widest uppercase text-xs animate-pulse">
@@ -52,7 +52,7 @@ function App() {
       {/* Navbar */}
       <header className="h-16 flex items-center justify-between px-4 lg:px-6 bg-[#181A20] border-b border-[#2B3139]">
         <div className="flex items-center space-x-6">
-          <button 
+          <button
             onClick={() => setActiveTab('Exchange Rates')}
             className="flex items-center space-x-2 text-[#FCD535] font-bold text-xl tracking-tight hover:opacity-80 transition-opacity"
           >
@@ -214,7 +214,7 @@ function App() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* Logo & Description */}
           <div className="space-y-3">
-            <button 
+            <button
               onClick={() => setActiveTab('Exchange Rates')}
               className="flex items-center justify-center md:justify-start space-x-2 text-[#FCD535] font-bold text-xl hover:opacity-80 transition-opacity mx-auto md:mx-0"
             >
@@ -239,14 +239,14 @@ function App() {
               </div>
               <div className="flex items-center justify-center md:justify-start space-x-2">
                 <span>Contact:</span>
-                <a href="mailto:info@superrich.tech" className="text-textMain hover:underline">info@superrich.tech</a>
+
               </div>
             </div>
             {/* Social Icons */}
             <div className="flex items-center justify-center md:justify-start space-x-4 pt-1">
-              <a 
-                href="https://www.facebook.com/share/1CzKSYWA5q/?mibextid=wwXIfr" 
-                target="_blank" 
+              <a
+                href="https://www.facebook.com/share/1CzKSYWA5q/?mibextid=wwXIfr"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-textMuted hover:text-[#FCD535] transition-colors"
                 title="Follow us on Facebook"
@@ -255,9 +255,9 @@ function App() {
                   <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.324v-21.35c0-.732-.593-1.325-1.325-1.325z" />
                 </svg>
               </a>
-              <a 
-                href="https://x.com/superrich_tech" 
-                target="_blank" 
+              <a
+                href="https://x.com/superrich_tech"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-textMuted hover:text-[#FCD535] transition-colors"
                 title="Follow us on X"
@@ -272,11 +272,11 @@ function App() {
           {/* Donate */}
           <div className="flex flex-col items-center space-y-4">
             <h3 className="text-[#EAECEF] text-xs font-bold uppercase tracking-widest text-center">Donate Us</h3>
-            
+
             {/* Parallel Payment Methods */}
             <div className="flex items-center justify-center space-x-2 sm:space-x-4 max-w-[240px]">
               <div className="flex flex-col items-center space-y-1.5 group">
-                <div 
+                <div
                   onClick={() => setZoomedImage('/donate.jpg')}
                   className="rounded overflow-hidden cursor-zoom-in transition-opacity hover:opacity-80"
                 >
@@ -284,9 +284,9 @@ function App() {
                 </div>
                 <span className="text-[7px] sm:text-[8px] text-textMuted uppercase font-bold whitespace-nowrap">Binance Pay</span>
               </div>
-              
+
               <div className="flex flex-col items-center space-y-1.5 group">
-                <div 
+                <div
                   onClick={() => setZoomedImage('/promptpay.jpg')}
                   className="rounded overflow-hidden cursor-zoom-in transition-opacity hover:opacity-80"
                 >
@@ -296,7 +296,7 @@ function App() {
               </div>
 
               <div className="flex flex-col items-center space-y-1.5 group">
-                <div 
+                <div
                   onClick={() => setZoomedImage('/kbzpay.jpg')}
                   className="rounded overflow-hidden cursor-zoom-in transition-opacity hover:opacity-80"
                 >
@@ -316,7 +316,7 @@ function App() {
                   <span className="text-[9px] font-mono text-textMain truncate select-all">
                     12yhkkbbjjqC2cdujWFfCggrDGLmqta262
                   </span>
-                  <button 
+                  <button
                     onClick={() => handleCopy('12yhkkbbjjqC2cdujWFfCggrDGLmqta262')}
                     className="text-[#FCD535] hover:scale-110 active:scale-95 transition-all flex-shrink-0 p-0.5"
                     title="Copy BTC Address"
